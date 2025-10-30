@@ -35,11 +35,12 @@ public class UserController {
         registrationService.register(user);
         return HttpStatus.OK;
     }
-    @GetMapping("/all")
+    @GetMapping("/hello")
     public List<User> getAll()
     {
         return personDetailsService.findAll();
     }
+
 
 
 }
