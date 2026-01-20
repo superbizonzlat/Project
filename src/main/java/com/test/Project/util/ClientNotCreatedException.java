@@ -1,2 +1,8 @@
-package com.test.Project.util;public class ClientNotCreatedException {
+package com.test.Project.util;
+
+public class ClientNotCreatedException extends RuntimeException{
+    public ClientNotCreatedException(String msg)
+    {
+        super(msg);
+    }
 }

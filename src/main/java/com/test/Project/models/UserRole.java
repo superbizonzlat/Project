@@ -2,7 +2,7 @@ package com.test.Project.models;
 
 public enum UserRole {
 
-    ADMIN,USER,CLIENT;
+    ADMIN,USER;
 
     public String getRole()
     {

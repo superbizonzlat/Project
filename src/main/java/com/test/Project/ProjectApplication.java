@@ -5,6 +5,7 @@ import org.modelmapper.PropertyMap;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
 @SpringBootApplication
 public class ProjectApplication {
@@ -16,7 +17,10 @@ public class ProjectApplication {
 	@Bean
 	public ModelMapper modelMapper()
 	{
-		return new ModelMapper();
+		ModelMapper mapper = new ModelMapper();
+		mapper.getConfiguration()
+				.setPropertyCondition(mappingContext -> mappingContext.getSource() != null);
+		return mapper;
 	}
 
 }
