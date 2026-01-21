@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Table(name = "client")
 @Getter
@@ -22,6 +24,9 @@ public class Client {
     private String telephone;
 
     private String mail;
+
+    @OneToMany(mappedBy = "client",cascade = CascadeType.PERSIST,orphanRemoval = false,fetch = FetchType.LAZY)
+    private List<Booking> booking;
 
     public Client() {
     }
