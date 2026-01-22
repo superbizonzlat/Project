@@ -5,7 +5,7 @@ import com.test.Project.models.Place;
 import com.test.Project.models.Sport;
 import com.test.Project.models.SportsField;
 import com.test.Project.repositories.PlaceRepository;
-import com.test.Project.repositories.SportFieldsRepository;
+import com.test.Project.repositories.SportsFieldRepository;
 import com.test.Project.repositories.SportRepository;
 import com.test.Project.util.SportFieldsException;
 import org.modelmapper.ModelMapper;
@@ -19,9 +19,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class SportFieldsService {
+public class SportsFieldService {
 
-    private final SportFieldsRepository sportFieldsRepository;
+    private final SportsFieldRepository sportsFieldRepository;
     private final PlaceRepository placeRepository;
 
     private  final SportRepository sportRepository;
@@ -29,8 +29,8 @@ public class SportFieldsService {
     private final ModelMapper modelMapper;
 
     @Autowired
-    public SportFieldsService(SportFieldsRepository sportFieldsRepository, PlaceRepository placeRepository, SportRepository sportRepository, ModelMapper modelMapper) {
-        this.sportFieldsRepository = sportFieldsRepository;
+    public SportsFieldService(SportsFieldRepository sportsFieldRepository, PlaceRepository placeRepository, SportRepository sportRepository, ModelMapper modelMapper) {
+        this.sportsFieldRepository = sportsFieldRepository;
         this.placeRepository = placeRepository;
         this.sportRepository = sportRepository;
         this.modelMapper = modelMapper;
@@ -38,13 +38,13 @@ public class SportFieldsService {
 
     public boolean findOne(String name)
     {
-        Optional<SportsField> foundSportFields= sportFieldsRepository.findSportsFieldByName(name);
+        Optional<SportsField> foundSportFields= sportsFieldRepository.findSportsFieldByName(name);
         return foundSportFields.isPresent();
     }
 
     public List<SportsField> findAll()
     {
-        return sportFieldsRepository.findAll();
+        return sportsFieldRepository.findAll();
     }
     @Transactional
     public void save(SportsField sportsField)
@@ -60,7 +60,7 @@ public class SportFieldsService {
             sportsField.setSport(sport);
             sport.setSportFields(new ArrayList<SportsField>(Collections.singletonList(sportsField)));
         }
-        sportFieldsRepository.save(sportsField);
+        sportsFieldRepository.save(sportsField);
 
     }
 
@@ -68,13 +68,13 @@ public class SportFieldsService {
     public void delete(SportsFieldDTO sportsFieldDTO)
     {
 
-        sportFieldsRepository.deleteByName(sportsFieldDTO.getName());
+        sportsFieldRepository.deleteByName(sportsFieldDTO.getName());
 
     }
     @Transactional
     public void update(SportsFieldDTO sportsFieldDTO, int id)
     {
-        Optional<SportsField> sportFieldsOptional = sportFieldsRepository.findById(id);
+        Optional<SportsField> sportFieldsOptional = sportsFieldRepository.findById(id);
         SportsField sportsField = sportFieldsOptional.orElseThrow(SportFieldsException::new);
         if (sportsFieldDTO.getSport() != null)
         {

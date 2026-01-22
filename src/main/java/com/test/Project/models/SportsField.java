@@ -5,9 +5,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
-@Table(name = "sport_fields")
+@Table(name = "sports_field")
 @Getter
 @Setter
 public class SportsField {
@@ -29,6 +30,9 @@ public class SportsField {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "place_id")
     private Place place;
+
+    @OneToMany(mappedBy = "sportsField",cascade = CascadeType.PERSIST,orphanRemoval = false,fetch = FetchType.LAZY)
+    private List<Booking> booking;
 
     public SportsField() {
     }

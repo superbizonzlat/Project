@@ -2,7 +2,7 @@ package com.test.Project.util;
 
 
 import com.test.Project.dto.SportsFieldDTO;
-import com.test.Project.services.SportFieldsService;
+import com.test.Project.services.SportsFieldService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -12,11 +12,11 @@ import org.springframework.validation.Validator;
 @Component
 public class SportsFieldValidator implements Validator {
 
-    private final SportFieldsService sportFieldsService;
+    private final SportsFieldService sportsFieldService;
 
     @Autowired
-    public SportsFieldValidator(SportFieldsService sportFieldsService) {
-        this.sportFieldsService = sportFieldsService;
+    public SportsFieldValidator(SportsFieldService sportsFieldService) {
+        this.sportsFieldService = sportsFieldService;
     }
 
     @Override
@@ -30,7 +30,7 @@ public class SportsFieldValidator implements Validator {
 
         if(!(sportsFieldDTO.getName().length() > 2 && sportsFieldDTO.getName().length() <= 10))
             errors.rejectValue("name", "", "Name should be between 2 and 10 characters");
-        if (sportFieldsService.findOne(sportsFieldDTO.getName()))
+        if (sportsFieldService.findOne(sportsFieldDTO.getName()))
             errors.rejectValue("name","","this name already exists");
     }
 }
