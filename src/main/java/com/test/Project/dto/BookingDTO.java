@@ -30,19 +30,19 @@ public class BookingDTO {
         if(sportsFieldDTO!= null) this.sportsFieldDTOOptional = Optional.of(sportsFieldDTO);
     }
 
-    public Optional<LocalDateTime> getBegin_at() {
-        return begin_at;
+    public LocalDateTime getBegin_at() {
+        return begin_at.orElse(null);
     }
 
-    public void setBegin_at(Optional<LocalDateTime> begin_at) {
-        this.begin_at = begin_at;
+    public void setBegin_at(LocalDateTime begin_at) {
+        if(begin_at!= null) this.begin_at = Optional.of(begin_at);
     }
 
-    public Optional<LocalDateTime> getEnd_at() {
-        return end_at;
+    public LocalDateTime getEnd_at() {
+        return end_at.orElse(null);
     }
 
-    public void setEnd_at(Optional<LocalDateTime> end_at) {
-        this.end_at = end_at;
+    public void setEnd_at(LocalDateTime end_at) {
+        if(end_at!= null) this.end_at = Optional.of(end_at);
     }
 }

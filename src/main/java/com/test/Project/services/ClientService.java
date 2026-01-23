@@ -38,6 +38,7 @@ public class ClientService {
         return foundClient.orElseThrow(ClientException::new);
     }
 
+
     public List<Client> findAll()
     {
         return clientRepository.findAll();

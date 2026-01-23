@@ -14,4 +14,5 @@ public interface ClientRepository extends JpaRepository<Client,Integer> {
     @Query("From Client  where telephone like concat('_',:d) or telephone like concat('__',:d) ")
     Optional<Client> findClientByTelephone(@Param("d") String telephone);
     Optional<Client> findClientByMailIgnoreCase(String mail);
+
 }

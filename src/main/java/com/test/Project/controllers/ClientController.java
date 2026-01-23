@@ -3,6 +3,7 @@ package com.test.Project.controllers;
 import com.test.Project.dto.ClientDTO;
 import com.test.Project.models.Client;
 import com.test.Project.services.ClientService;
+import com.test.Project.util.ClientException;
 import com.test.Project.util.ClientNotCreatedException;
 import com.test.Project.util.ClientValidator;
 import com.test.Project.util.SportsFieldNotCreatedException;
@@ -66,6 +67,11 @@ public class ClientController {
     private ResponseEntity<String> handleException(ClientNotCreatedException e)
     {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler
+    private ResponseEntity<String> handleException(ClientException e)
+    {
+        return new ResponseEntity<>("client not found", HttpStatus.BAD_REQUEST);
     }
 
 }
