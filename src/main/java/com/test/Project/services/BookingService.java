@@ -16,6 +16,7 @@ import java.util.Optional;
 public class BookingService {
     private final SportsFieldRepository sportsFieldRepository;
     private final ClientRepository clientRepository;
+
     @Autowired
     public BookingService(SportsFieldRepository sportsFieldRepository, ClientRepository clientRepository) {
         this.sportsFieldRepository = sportsFieldRepository;

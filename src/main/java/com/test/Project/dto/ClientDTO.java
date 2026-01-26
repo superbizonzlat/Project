@@ -15,7 +15,7 @@ public class ClientDTO {
     private Optional<@Email(message = "wrong format email") String> mail;
 
     public String getLastname() {
-        return this.lastname.orElse(null);
+        return this.lastname != null ? this.lastname.get() : null ;
     }
 
     public void setLastname(String lastname) {
@@ -23,7 +23,7 @@ public class ClientDTO {
     }
 
     public String getFirstname() {
-        return this.firstname.orElse(null);
+        return this.firstname != null ? this.firstname.get() : null ;
     }
 
     public void setFirstname(String firstname) {
@@ -31,7 +31,7 @@ public class ClientDTO {
     }
 
     public String getTelephone() {
-        return this.telephone.orElse(null);
+        return this.telephone != null ? this.telephone.get() : null ;
     }
 
     public void setTelephone(String telephone) {
@@ -39,7 +39,7 @@ public class ClientDTO {
     }
 
     public String getMail() {
-        return this.mail.orElse(null);
+        return this.mail != null ? this.mail.get() : null ;
     }
 
     public void setMail(String mail) {
