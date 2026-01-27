@@ -1,21 +1,14 @@
 package com.test.Project.services;
 
 import com.test.Project.dto.ClientDTO;
-import com.test.Project.dto.SportsFieldDTO;
 import com.test.Project.models.Client;
-import com.test.Project.models.Place;
-import com.test.Project.models.Sport;
-import com.test.Project.models.SportsField;
 import com.test.Project.repositories.ClientRepository;
 import com.test.Project.util.ClientException;
-import com.test.Project.util.SportFieldsException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 

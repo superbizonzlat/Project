@@ -7,7 +7,7 @@ import com.test.Project.models.SportsField;
 import com.test.Project.repositories.PlaceRepository;
 import com.test.Project.repositories.SportsFieldRepository;
 import com.test.Project.repositories.SportRepository;
-import com.test.Project.util.SportFieldsException;
+import com.test.Project.util.SportsFieldException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -76,7 +76,7 @@ public class SportsFieldService {
     public void update(SportsFieldDTO sportsFieldDTO, int id)
     {
         Optional<SportsField> sportFieldsOptional = sportsFieldRepository.findById(id);
-        SportsField sportsField = sportFieldsOptional.orElseThrow(SportFieldsException::new);
+        SportsField sportsField = sportFieldsOptional.orElseThrow(SportsFieldException::new);
         if (sportsFieldDTO.getSport() != null)
         {
            Sport sport = sportRepository.findSportByNameContainingIgnoreCase(sportsFieldDTO.getSport().getName()).get();

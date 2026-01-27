@@ -3,7 +3,7 @@ package com.test.Project.controllers;
 import com.test.Project.dto.SportsFieldDTO;
 import com.test.Project.models.SportsField;
 import com.test.Project.services.SportsFieldService;
-import com.test.Project.util.SportFieldsException;
+import com.test.Project.util.SportsFieldException;
 import com.test.Project.util.SportsFieldNotCreatedException;
 import com.test.Project.util.SportsFieldValidator;
 import jakarta.validation.Valid;
@@ -116,7 +116,7 @@ public class SportsFieldController {
     }
 
     @ExceptionHandler
-    private ResponseEntity<String> handleException(SportFieldsException e)
+    private ResponseEntity<String> handleException(SportsFieldException e)
     {
         return new ResponseEntity<>("sportFields not found", HttpStatus.BAD_REQUEST);
     }

@@ -1,5 +1,7 @@
 package com.test.Project.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
@@ -13,11 +15,13 @@ public class BookingDTO {
 
     private Optional<SportsFieldDTO> sportsFieldDTO;
 
-    @DateTimeFormat(pattern="yyyy-MM-dd")
-    private Optional<LocalDateTime> begin_at;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @NotNull(message = "this value not null")
+    private Optional< LocalDateTime> begin_at;
 
-    @DateTimeFormat(pattern="yyyy-MM-dd")
-    private Optional<LocalDateTime> end_at;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @NotNull(message = "this value not null")
+    private Optional< LocalDateTime> end_at;
 
     public ClientDTO getClientDTO() {
         return clientDTO.orElse(null);

@@ -2,11 +2,11 @@ package com.test.Project.controllers;
 
 import com.test.Project.dto.ClientDTO;
 import com.test.Project.models.Client;
+import com.test.Project.services.BookingService;
 import com.test.Project.services.ClientService;
 import com.test.Project.util.ClientException;
 import com.test.Project.util.ClientNotCreatedException;
 import com.test.Project.util.ClientValidator;
-import com.test.Project.util.SportsFieldNotCreatedException;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +23,9 @@ import java.util.List;
 public class ClientController {
     private final ClientService clientService;
     private final ModelMapper modelMapper;
-
     private final ClientValidator clientValidator;
+
+
 
 
     @Autowired
@@ -32,6 +33,13 @@ public class ClientController {
         this.clientService = clientService;
         this.modelMapper = modelMapper;
         this.clientValidator = clientValidator;
+    }
+
+    @GetMapping("/{id}")
+    public HttpStatus getClient(@PathVariable int id)
+    {
+        clientService.findOne(id);
+        return HttpStatus.OK;
     }
 
     @PostMapping
