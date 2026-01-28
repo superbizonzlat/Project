@@ -3,10 +3,7 @@ package com.test.Project.controllers;
 import com.test.Project.dto.BookingDTO;
 import com.test.Project.models.Booking;
 import com.test.Project.services.BookingService;
-import com.test.Project.util.BookingNotCreatedException;
-import com.test.Project.util.ClientException;
-import com.test.Project.util.ClientNotCreatedException;
-import com.test.Project.util.SportsFieldException;
+import com.test.Project.util.*;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,6 +64,17 @@ public class BookingController {
     private ResponseEntity<String> handleException(SportsFieldException e)
     {
         return new ResponseEntity<>("sport fields not found", HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    private ResponseEntity<String> handleException(BookingNotCreatedException e)
+    {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler
+    private ResponseEntity<String> handleException(BookingException e)
+    {
+        return new ResponseEntity<>("booking not found", HttpStatus.BAD_REQUEST);
     }
 
 }

@@ -27,7 +27,7 @@ public class BookingDTO {
         return clientDTO.orElse(null);
     }
 
-    public void setClientDTOOptional(ClientDTO clientDTO) {
+    public void setClientDTO(ClientDTO clientDTO) {
         if(clientDTO != null) this.clientDTO = Optional.of(clientDTO);
     }
 
