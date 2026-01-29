@@ -7,6 +7,7 @@ import com.test.Project.repositories.BookingRepository;
 import com.test.Project.repositories.ClientRepository;
 import com.test.Project.repositories.SportsFieldRepository;
 import com.test.Project.util.BookingException;
+import com.test.Project.util.BookingNotCreatedException;
 import com.test.Project.util.ClientException;
 import com.test.Project.util.SportsFieldException;
 import org.modelmapper.ModelMapper;
@@ -14,6 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -32,6 +38,11 @@ public class BookingService {
         this.modelMapper = modelMapper;
     }
 
+    public List<Booking> getAll()
+    {
+        return bookingRepository.findAll();
+    }
+
     @Transactional
     public void save(Booking booking)
     {
@@ -41,6 +52,7 @@ public class BookingService {
         Optional<SportsField> optionalSportsField = sportsFieldRepository.findSportsFieldByName(booking.getSportsField().getName());
         SportsField sportsField = optionalSportsField.orElseThrow(SportsFieldException::new);
         booking.setSportsField(sportsField);
+        checkBooking(booking);
         bookingRepository.save(booking);
     }
     @Transactional
@@ -56,11 +68,29 @@ public class BookingService {
         }
         if (bookingDTO.getSportsFieldDTO() != null)
         {
-            Optional<SportsField> optionalSportsField = sportsFieldRepository.findSportsFieldByName(bookingDTO.getSportsFieldDTO().getName();
+            Optional<SportsField> optionalSportsField = sportsFieldRepository.findSportsFieldByName(bookingDTO.getSportsFieldDTO().getName());
             booking.setSportsField(optionalSportsField.orElseThrow(SportsFieldException::new));
             bookingDTO.setSportsFieldDTO(null);
         }
 
         modelMapper.map(bookingDTO, booking);
     }
+
+    private void checkBooking(Booking booking)
+    {
+        LocalDateTime currentDay = LocalDateTime.now();
+        if(currentDay.isAfter(booking.getBegin_at()))
+            throw new BookingNotCreatedException("Вы не можете ввести прошлую дату");
+        if(booking.getBegin_at().getYear() != booking.getEnd_at().getYear() ||
+            booking.getBegin_at().getDayOfYear() != booking.getEnd_at().getDayOfYear())
+            throw new BookingNotCreatedException("Вы можете забронировать только на 1 день");
+        if(booking.getBegin_at().isAfter(booking.getEnd_at()))
+            throw new BookingNotCreatedException("Дата конца бронирования не может быть меньше даты начала");
+        Duration duration = Duration.between(booking.getBegin_at(),booking.getEnd_at());
+        if(duration.toHours() < 1)
+            throw new BookingNotCreatedException("Не должно быть меньше часа");
+
+
+    }
+
 }
