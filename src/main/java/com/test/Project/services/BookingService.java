@@ -89,8 +89,14 @@ public class BookingService {
         Duration duration = Duration.between(booking.getBegin_at(),booking.getEnd_at());
         if(duration.toHours() < 1)
             throw new BookingNotCreatedException("Не должно быть меньше часа");
-
-
+        Optional<Booking> booking1 = bookingRepository.findBookingByDate(booking.getBegin_at());
+        //Optional<Booking> booking2 = bookingRepository.findBookingByDate(booking.getEnd_at(),booking.getSportsField().getName());
+        if(booking1.isPresent()) //|| booking2.isPresent())
+        {
+            SportsField sportsField = booking1.get().getSportsField();;
+            if(sportsField.getName().equals(booking.getSportsField().getName()))
+                throw new BookingNotCreatedException("Время занято!!!");
+        }
     }
 
 }
