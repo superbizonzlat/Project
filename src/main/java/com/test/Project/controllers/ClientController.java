@@ -61,6 +61,11 @@ public class ClientController {
         clientService.save(convertToClient(clientDTO));
         return HttpStatus.OK;
     }
+    @GetMapping("/clients")
+    public List<Client> getClient()
+    {
+        return clientService.findAll();
+    }
 
     private Client convertToClient(ClientDTO clientDTO) {
         return modelMapper.map(clientDTO,Client.class);

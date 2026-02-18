@@ -4,6 +4,7 @@ import com.test.Project.dto.ClientDTO;
 import com.test.Project.models.Client;
 import com.test.Project.repositories.ClientRepository;
 import com.test.Project.util.ClientException;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
+@Slf4j
 public class ClientService {
     private final ClientRepository clientRepository;
 
@@ -34,14 +36,13 @@ public class ClientService {
 
     public List<Client> findAll()
     {
+        log.info("Запрашивание всех клиентов");
         return clientRepository.findAll();
     }
     @Transactional
     public void save(Client client)
     {
-
         clientRepository.save(client);
-
     }
 
     @Transactional
