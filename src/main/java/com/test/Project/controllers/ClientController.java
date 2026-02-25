@@ -17,6 +17,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/client")
@@ -62,9 +63,9 @@ public class ClientController {
         return HttpStatus.OK;
     }
     @GetMapping("/clients")
-    public List<Client> getClient()
+    public List<ClientDTO> getClient()
     {
-        return clientService.findAll();
+        return clientService.findAll().stream().map(this::convertToClientDTO).collect(Collectors.toList());
     }
 
     private Client convertToClient(ClientDTO clientDTO) {

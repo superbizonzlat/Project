@@ -16,11 +16,15 @@
     </appender>
 
     <!-- Корневой логгер -->
-    <root level="error">
+    <root level="ERROR">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="FILE"/>
     </root>
 
-    <logger name="com.test.Project.services.ClientService" level="INFO"/>
 
+    <logger name="com.test.Project.services.ClientService" level="INFO" additivity="false">
+        <appender-ref ref="FILE"/>
+    </logger>
+
+    <statusListener class="ch.qos.logback.core.status.NopStatusListener"/>
 </configuration>
