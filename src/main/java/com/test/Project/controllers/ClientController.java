@@ -6,6 +6,7 @@ import com.test.Project.services.BookingService;
 import com.test.Project.services.ClientService;
 import com.test.Project.util.ClientException;
 import com.test.Project.util.ClientNotCreatedException;
+import com.test.Project.util.ClientNotDeletedException;
 import com.test.Project.util.ClientValidator;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
@@ -20,13 +21,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/client")
+@RequestMapping("/clients")
 public class ClientController {
     private final ClientService clientService;
     private final ModelMapper modelMapper;
     private final ClientValidator clientValidator;
-
-
 
 
     @Autowired
@@ -36,36 +35,41 @@ public class ClientController {
         this.clientValidator = clientValidator;
     }
 
-    @GetMapping("/{id}")
-    public HttpStatus getClient(@PathVariable int id)
+    @GetMapping()
+    public List<ClientDTO> getClients()
     {
-        clientService.findOne(id);
-        return HttpStatus.OK;
+        return clientService.findAll().stream().map(this::convertToClientDTO).collect(Collectors.toList());
+    }
+
+    @GetMapping("/{id}")
+    public ClientDTO getClient(@PathVariable("id") int id)
+    {
+        return convertToClientDTO(clientService.findOne(id));
     }
 
     @PostMapping
     public HttpStatus createClient(@RequestBody @Valid ClientDTO clientDTO, BindingResult result)
     {
         clientValidator.validate(clientDTO,result);
-
-        if(result.hasErrors())
-        {
-            StringBuilder stringBuilder = new StringBuilder();
-            List<FieldError> errors = result.getFieldErrors();
-            for(FieldError error:errors)
-                stringBuilder.append(error.getField()).
-                        append(" - ").
-                        append(error.getDefaultMessage())
-                        .append(";");
-            throw new ClientNotCreatedException(stringBuilder.toString());
-        }
+        processValid(result);
         clientService.save(convertToClient(clientDTO));
         return HttpStatus.OK;
     }
-    @GetMapping("/clients")
-    public List<ClientDTO> getClient()
+
+    @PatchMapping("/{id}")
+    public HttpStatus updateClient(@RequestBody @Valid ClientDTO clientDTO,@PathVariable("id") int id, BindingResult result)
     {
-        return clientService.findAll().stream().map(this::convertToClientDTO).collect(Collectors.toList());
+        processValid(result);
+        clientService.update(clientDTO,id);
+        return HttpStatus.OK;
+
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteClient(@PathVariable("id") int id)
+    {
+        clientService.delete(id);
+        return new ResponseEntity<>("This client was successfully deleted",HttpStatus.OK);
     }
 
     private Client convertToClient(ClientDTO clientDTO) {
@@ -87,5 +91,24 @@ public class ClientController {
     {
         return new ResponseEntity<>("client not found", HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler
+    private ResponseEntity<String> handleException(ClientNotDeletedException e)
+    {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 
+    private void processValid(BindingResult result)
+    {
+        if(result.hasErrors())
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            List<FieldError> errors = result.getFieldErrors();
+            for(FieldError error:errors)
+                stringBuilder.append(error.getField()).
+                        append(" - ").
+                        append(error.getDefaultMessage())
+                        .append(";");
+            throw new ClientNotCreatedException(stringBuilder.toString());
+        }
+    }
 }

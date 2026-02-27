@@ -1,9 +1,12 @@
 package com.test.Project.services;
 
 import com.test.Project.dto.ClientDTO;
+import com.test.Project.models.Booking;
 import com.test.Project.models.Client;
 import com.test.Project.repositories.ClientRepository;
 import com.test.Project.util.ClientException;
+import com.test.Project.util.ClientNotCreatedException;
+import com.test.Project.util.ClientNotDeletedException;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +52,8 @@ public class ClientService {
     public void delete(int id)
     {
         Client client = findOne(id);
+        if(!client.getBooking().isEmpty())
+            throw new ClientNotDeletedException("You can't delete a client, there are links");
         clientRepository.delete(client);
 
     }
