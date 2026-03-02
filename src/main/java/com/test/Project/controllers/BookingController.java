@@ -1,6 +1,7 @@
 package com.test.Project.controllers;
 
 import com.test.Project.dto.BookingDTO;
+import com.test.Project.dto.ClientDTO;
 import com.test.Project.models.Booking;
 import com.test.Project.services.BookingService;
 import com.test.Project.util.*;
@@ -14,9 +15,10 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/booking")
+@RequestMapping("/bookings")
 public class BookingController {
 
     private final BookingService bookingService;
@@ -25,6 +27,12 @@ public class BookingController {
     public BookingController(BookingService bookingService, ModelMapper modelMapper) {
         this.bookingService = bookingService;
         this.modelMapper = modelMapper;
+    }
+
+    @GetMapping
+    public List<BookingDTO> getBooking()
+    {
+        return bookingService.getAll().stream().map(this::convertToBookingDTO).collect(Collectors.toList());
     }
 
     @PostMapping
@@ -44,6 +52,8 @@ public class BookingController {
         bookingService.save(convertToBooking(bookingDTO));
         return HttpStatus.OK;
     }
+
+
 
     private Booking convertToBooking(BookingDTO bookingDTO) {
         return modelMapper.map(bookingDTO,Booking.class);

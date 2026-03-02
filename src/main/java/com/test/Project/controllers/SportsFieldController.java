@@ -3,9 +3,7 @@ package com.test.Project.controllers;
 import com.test.Project.dto.SportsFieldDTO;
 import com.test.Project.models.SportsField;
 import com.test.Project.services.SportsFieldService;
-import com.test.Project.util.SportsFieldException;
-import com.test.Project.util.SportsFieldNotCreatedException;
-import com.test.Project.util.SportsFieldValidator;
+import com.test.Project.util.*;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +18,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/sports_field")
+    @RequestMapping("/sports_field")
 public class SportsFieldController {
 
     private final SportsFieldService sportsFieldService;
@@ -33,8 +31,8 @@ public class SportsFieldController {
         this.sportsFieldValidator = sportsFieldValidator;
     }
 
-    @GetMapping("/all")
-    public List<SportsFieldDTO> getAllSportFields()
+    @GetMapping()
+    public List<SportsFieldDTO> getAllSportsField()
     {
 
         /*Function<Double, Long> function = new Function<Double, Long>() {
@@ -84,14 +82,14 @@ public class SportsFieldController {
         return HttpStatus.CREATED;
     }
 
-    @PostMapping("/delete")
+    @DeleteMapping()
     public HttpStatus deleteSportFields(@RequestBody SportsFieldDTO sportsFieldDTO)
     {
         sportsFieldService.delete(sportsFieldDTO);
         return HttpStatus.OK;
     }
 
-    @PostMapping("/update/{id}")
+    @PatchMapping("/{id}")
     public HttpStatus updateSportFields (@RequestBody SportsFieldDTO sportsFieldDTO, @PathVariable("id") int id)
     {
         sportsFieldService.update(sportsFieldDTO,id);
@@ -118,7 +116,18 @@ public class SportsFieldController {
     @ExceptionHandler
     private ResponseEntity<String> handleException(SportsFieldException e)
     {
-        return new ResponseEntity<>("sportFields not found", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("sportsField not found", HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    private ResponseEntity<String> handleException(PlaceNotFoundException e)
+    {
+        return new ResponseEntity<>("place not found", HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler
+    private ResponseEntity<String> handleException(SportNotFoundException e)
+    {
+        return new ResponseEntity<>("sport not found", HttpStatus.BAD_REQUEST);
     }
 
 }

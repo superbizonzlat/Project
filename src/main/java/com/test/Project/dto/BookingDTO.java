@@ -1,6 +1,7 @@
 package com.test.Project.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -9,34 +10,35 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Optional;
 
+
 public class BookingDTO {
 
-    private Optional<ClientDTO> clientDTO;
+    private Optional<ClientDTO> client;
 
-    private Optional<SportsFieldDTO> sportsFieldDTO;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    @NotNull(message = "this value not null")
-    private Optional< LocalDateTime> begin_at;
+    private Optional<SportsFieldDTO> sportsField;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     @NotNull(message = "this value not null")
-    private Optional< LocalDateTime> end_at;
+    private Optional<LocalDateTime> begin_at;
 
-    public ClientDTO getClientDTO() {
-        return clientDTO.orElse(null);
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @NotNull(message = "this value not null")
+    private Optional<LocalDateTime> end_at;
+
+    public ClientDTO getClient() {
+        return client.orElse(null);
     }
 
-    public void setClientDTO(ClientDTO clientDTO) {
-        if(clientDTO != null) this.clientDTO = Optional.of(clientDTO);
+    public void setClient(ClientDTO clientDTO) {
+        if(clientDTO!= null) this.client = Optional.of(clientDTO);
     }
 
-    public SportsFieldDTO getSportsFieldDTO() {
-        return sportsFieldDTO.orElse(null);
+    public SportsFieldDTO getSportsField() {
+        return sportsField.orElse(null);
     }
 
-    public void setSportsFieldDTO(SportsFieldDTO sportsFieldDTO) {
-        if(sportsFieldDTO!= null) this.sportsFieldDTO = Optional.of(sportsFieldDTO);
+    public void setSportsField(SportsFieldDTO sportsFieldDTO) {
+        if(sportsFieldDTO!= null) this.sportsField = Optional.of(sportsFieldDTO);
     }
 
     public LocalDateTime getBegin_at() {

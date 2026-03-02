@@ -40,6 +40,7 @@ public class BookingService {
 
     public List<Booking> getAll()
     {
+
         return bookingRepository.findAll();
     }
 
@@ -60,17 +61,17 @@ public class BookingService {
     {
         Optional<Booking> optionalBooking = bookingRepository.findById(id);
         Booking booking = optionalBooking.orElseThrow(BookingException::new);
-        if (bookingDTO.getClientDTO() != null)
+        if (bookingDTO.getClient() != null)
         {
-            Optional<Client> optionalClient = clientRepository.findClientByMailIgnoreCase(bookingDTO.getClientDTO().getMail());
+            Optional<Client> optionalClient = clientRepository.findClientByMailIgnoreCase(bookingDTO.getClient().getMail());
             booking.setClient(optionalClient.orElseThrow(ClientException::new));
-            bookingDTO.setClientDTO(null);
+            bookingDTO.setClient(null);
         }
-        if (bookingDTO.getSportsFieldDTO() != null)
+        if (bookingDTO.getSportsField() != null)
         {
-            Optional<SportsField> optionalSportsField = sportsFieldRepository.findSportsFieldByName(bookingDTO.getSportsFieldDTO().getName());
+            Optional<SportsField> optionalSportsField = sportsFieldRepository.findSportsFieldByName(bookingDTO.getSportsField().getName());
             booking.setSportsField(optionalSportsField.orElseThrow(SportsFieldException::new));
-            bookingDTO.setSportsFieldDTO(null);
+            bookingDTO.setSportsField(null);
         }
 
         modelMapper.map(bookingDTO, booking);

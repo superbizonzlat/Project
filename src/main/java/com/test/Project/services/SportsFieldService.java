@@ -7,6 +7,8 @@ import com.test.Project.models.SportsField;
 import com.test.Project.repositories.PlaceRepository;
 import com.test.Project.repositories.SportsFieldRepository;
 import com.test.Project.repositories.SportRepository;
+import com.test.Project.util.PlaceNotFoundException;
+import com.test.Project.util.SportNotFoundException;
 import com.test.Project.util.SportsFieldException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,16 +53,13 @@ public class SportsFieldService {
     public void save(SportsField sportsField)
     {
         Optional<Place> optionalPlace = placeRepository.findPlaceByNameContainingIgnoreCase(sportsField.getPlace().getName());
-        Place place = optionalPlace.orElse(null);
+        Place place = optionalPlace.orElseThrow(PlaceNotFoundException::new);
         Optional<Sport> optionalSport = sportRepository.findSportByNameContainingIgnoreCase(sportsField.getSport().getName());
-        Sport sport = optionalSport.orElse(null);
-        if(sport != null && place != null)
-        {
-            sportsField.setPlace(place);
-            place.setSportFields(new ArrayList<SportsField>(Collections.singletonList(sportsField)));
-            sportsField.setSport(sport);
-            sport.setSportFields(new ArrayList<SportsField>(Collections.singletonList(sportsField)));
-        }
+        Sport sport = optionalSport.orElseThrow(SportNotFoundException::new);
+        sportsField.setPlace(place);
+        place.setSportFields(new ArrayList<SportsField>(Collections.singletonList(sportsField)));
+        sportsField.setSport(sport);
+        sport.setSportFields(new ArrayList<SportsField>(Collections.singletonList(sportsField)));
         sportsFieldRepository.save(sportsField);
 
     }
@@ -79,13 +78,13 @@ public class SportsFieldService {
         SportsField sportsField = sportFieldsOptional.orElseThrow(SportsFieldException::new);
         if (sportsFieldDTO.getSport() != null)
         {
-           Sport sport = sportRepository.findSportByNameContainingIgnoreCase(sportsFieldDTO.getSport().getName()).get();
+           Sport sport = sportRepository.findSportByNameContainingIgnoreCase(sportsFieldDTO.getSport().getName()).orElseThrow(SportNotFoundException::new);
            sportsField.setSport(sport);
            sportsFieldDTO.setSport(null);
         }
         if (sportsFieldDTO.getPlace() != null)
         {
-            Place place = placeRepository.findPlaceByNameContainingIgnoreCase(sportsFieldDTO.getPlace().getName()).get();
+            Place place = placeRepository.findPlaceByNameContainingIgnoreCase(sportsFieldDTO.getPlace().getName()).orElseThrow(PlaceNotFoundException::new);
             sportsField.setPlace(place);
             sportsFieldDTO.setPlace(null);
         }
