@@ -1,0 +1,24 @@
+version: '3.8'
+services:
+  client-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: client-backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/db_test_project
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 94Kardan
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql-db
+
+  mysql-db:
+    image: mysql
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 94Kardan
+      MYSQL_DATABASE: db_test_project
+    ports:
+      - "3307:3306"
